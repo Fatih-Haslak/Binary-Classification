@@ -1,7 +1,9 @@
-Dataset Link ---> https://www.kaggle.com/datasets/tongpython/cat-and-dog/
+# Dataset Link ---> https://www.kaggle.com/datasets/tongpython/cat-and-dog/
 
 # train.py
+
 if __name__ == "__main__":
+    
     root_folder = "your data folder contain a dog folder and a cat folder"
 
     -your_dataset
@@ -10,4 +12,4 @@ if __name__ == "__main__":
 
 #inference.py (will update)
 
--just change folder name
+--just change folder name
