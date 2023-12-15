@@ -8,7 +8,9 @@ if __name__ == "__main__":
 
     -your_dataset
     --cat
+     -cat.jpg
     --dog
+     -dog.jpg
 
 # inference.py (will update)
 
