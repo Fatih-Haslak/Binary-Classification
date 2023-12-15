@@ -10,6 +10,6 @@ if __name__ == "__main__":
     --cat
     --dog
 
-#inference.py (will update)
+# inference.py (will update)
 
 --just change folder name
