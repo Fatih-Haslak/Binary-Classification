@@ -46,18 +46,24 @@ class CNNModel(nn.Module):
         self.batchnorm1 = nn.BatchNorm2d(16)
         self.relu1 = nn.GELU()
         self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
+        self.batchnorm2 = nn.BatchNorm2d(32)
+        self.resblock1 = ResidualBlock(32, 64)
         
-        self.resblock1 = ResidualBlock(16, 32)
+        self.resblock2 = ResidualBlock(64, 128)
         
-        self.resblock2 = ResidualBlock(32, 64)
+        self.resblock3 = ResidualBlock(128, 128)
         
-        self.resblock3 = ResidualBlock(64, 64)
-        
-        self.fc1 = nn.Linear(64 * 64 * 64, 128)
-        self.batchnorm4 = nn.BatchNorm1d(128)
+        self.fc1 = nn.Linear(131072, 256)
+        self.batchnorm4 = nn.LayerNorm(256)
+        self.batchnorm5 = nn.LayerNorm(128)
+        self.batchnorm6 = nn.LayerNorm(64)
         self.relu4 = nn.GELU()
-        
-        self.fc2 = nn.Linear(128, 1)
+        self.fc1_1 = nn.Linear(256, 128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 32)
+        self.fc4 = nn.Linear(32, 16)
+        self.fc5 = nn.Linear(16, 1)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -66,16 +72,41 @@ class CNNModel(nn.Module):
         x = self.relu1(x)
         x = self.pool1(x)
         
+        x = self.conv2(x)
+        x = self.batchnorm2(x)
+        x = self.relu1(x)
+      
+        x = self.pool1(x)
         x = self.resblock1(x)
         x = self.resblock2(x)
         x = self.resblock3(x)
-        
-        x = x.view(-1, 64 * 64 * 64)
-        
+        # print(x.size())
+        x = x.view(x.size(0),-1) #önemli nokta.
+        # print(x.size())
         x = self.fc1(x)
+        #=nn.Linear(131072, 256)
         x = self.batchnorm4(x)
+      
+        x = self.relu4(x)
+        
+        x = self.fc1_1(x)
+        x = self.batchnorm5(x)
         x = self.relu4(x)
         
         x = self.fc2(x)
+        x = self.batchnorm6(x)
+        x = self.relu4(x)
+        
+        x = self.fc3(x)
+        x = self.relu4(x)
+        
+        x = self.fc4(x)
+        x = self.relu4(x)
+        
+        x=self.fc5(x)
+      
+   
         x = self.sigmoid(x)
+
+      
         return x
