@@ -38,7 +38,7 @@ class Classification(L.LightningModule):
         img, label = batch
         label = label.view(-1, 1).float()
         optimizer_model= self.optimizers()
-        self.toggle_optimizer(optimizer_model)
+        #self.toggle_optimizer(optimizer_model)
         self.predicted_label = self(img) #img
         #calculate loss
         loss = self.criterion(self.predicted_label, label)
@@ -46,7 +46,7 @@ class Classification(L.LightningModule):
         self.manual_backward(loss,retain_graph=True)# backward
         optimizer_model.step()
         optimizer_model.zero_grad()
-        self.untoggle_optimizer(optimizer_model)
+        #self.untoggle_optimizer(optimizer_model)
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
